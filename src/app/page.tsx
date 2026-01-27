@@ -89,6 +89,7 @@ export default function Home() {
   const formRef = React.useRef<HTMLFormElement>(null);
   const [file, setFile] = React.useState<File | null>(null);
   const [isDragging, setIsDragging] = React.useState(false);
+  const [answerKey, setAnswerKey] = React.useState(0);
 
   React.useEffect(() => {
     if (state.error) {
@@ -97,6 +98,9 @@ export default function Home() {
         title: 'Error',
         description: state.error,
       });
+    }
+    if (state.answer) {
+      setAnswerKey(key => key + 1);
     }
   }, [state, toast]);
 
@@ -254,7 +258,7 @@ export default function Home() {
                 </CardContent>
             </Card>
 
-            <AnswerSection key={state.timestamp} answer={state.answer} />
+            <AnswerSection key={answerKey} answer={state.answer} />
           </form>
 
         </div>

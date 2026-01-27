@@ -6,7 +6,6 @@ import { generateStudyGuide } from '@/ai/flows/generate-study-guide-from-lecture
 export interface AskQuestionState {
   answer: string | null;
   error: string | null;
-  timestamp?: number;
 }
 
 export async function askQuestion(
@@ -46,7 +45,7 @@ export async function askQuestion(
       };
     }
 
-    return { answer: result.studyGuide, error: null, timestamp: Date.now() };
+    return { answer: result.studyGuide, error: null };
   } catch (error) {
     console.error(error);
     return {
