@@ -86,9 +86,7 @@ export default function Home() {
   const [state, formAction] = useActionState(askQuestion, initialState);
   const { toast } = useToast();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
-  const formRef = React.useRef<HTMLFormElement>(null);
   const [file, setFile] = React.useState<File | null>(null);
-  const [isDragging, setIsDragging] = React.useState(false);
 
   React.useEffect(() => {
     if (state.error) {
@@ -122,39 +120,6 @@ export default function Home() {
     }
   };
   
-  const handleDrag = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    if (e.type === 'dragenter' || e.type === 'dragover') {
-      setIsDragging(true);
-    } else if (e.type === 'dragleave') {
-      setIsDragging(false);
-    }
-  };
-  
-  const handleDrop = (e: React.DragEvent) => {
-    e.preventDefault();
-    e.stopPropagation();
-    setIsDragging(false);
-    const droppedFile = e.dataTransfer.files?.[0];
-    if (droppedFile) {
-       if (droppedFile.type === 'application/pdf') {
-        setFile(droppedFile);
-        if(fileInputRef.current) {
-          const dataTransfer = new DataTransfer();
-          dataTransfer.items.add(droppedFile);
-          fileInputRef.current.files = dataTransfer.files;
-        }
-      } else {
-        toast({
-          variant: 'destructive',
-          title: 'Invalid File Type',
-          description: 'Please upload a PDF file.',
-        });
-      }
-    }
-  };
-
   const clientAction = (formData: FormData) => {
     if (!file) {
       toast({
@@ -184,11 +149,11 @@ export default function Home() {
             </p>
           </header>
           
-          <form ref={formRef} action={clientAction} className="space-y-8">
+          <form action={clientAction} className="space-y-8">
             <Card className="shadow-lg">
                 <CardContent className="p-6 grid gap-6">
                   <div className="grid gap-2">
-                    <Label htmlFor="pdf-upload">Upload Document</Label>
+                    <Label htmlFor="pdf-upload-input">Upload Document</Label>
                     {file ? (
                       <div className="flex items-center justify-between p-3 border rounded-lg bg-secondary/50">
                         <div className="flex items-center gap-3">
@@ -209,19 +174,15 @@ export default function Home() {
                     ) : (
                       <label
                         htmlFor="pdf-upload-input"
-                        onDragEnter={handleDrag}
-                        onDragOver={handleDrag}
-                        onDragLeave={handleDrag}
-                        onDrop={handleDrop}
                         className={cn(
                           'flex flex-col items-center justify-center w-full h-32 border-2 border-dashed rounded-lg cursor-pointer hover:bg-secondary/50 transition-colors',
-                          isDragging ? 'border-primary bg-secondary' : 'border-border'
+                          'border-border'
                         )}
                       >
                         <div className="flex flex-col items-center justify-center pt-5 pb-6">
                           <UploadCloud className="w-8 h-8 mb-4 text-muted-foreground" />
                           <p className="mb-2 text-sm text-muted-foreground">
-                            <span className="font-semibold text-primary">Click to upload</span> or drag and drop
+                            <span className="font-semibold text-primary">Click to upload</span>
                           </p>
                           <p className="text-xs text-muted-foreground">PDF only (MAX. 10MB)</p>
                         </div>
