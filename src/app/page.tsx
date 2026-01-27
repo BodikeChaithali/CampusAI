@@ -1,5 +1,5 @@
 import { GraduationCap } from 'lucide-react';
-import { CampusAIClient } from '@/components/campus-ai-client';
+import { CampusAIClient } from '../components/campus-ai-client';
 
 export default function Home() {
   return (

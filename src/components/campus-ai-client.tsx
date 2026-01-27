@@ -1,7 +1,8 @@
 'use client';
 
 import * as React from 'react';
-import { useFormState, useFormStatus } from 'react-dom';
+import { useActionState } from 'react';
+import { useFormStatus } from 'react-dom';
 import { askQuestion, type AskQuestionState } from '@/app/actions';
 import { Button } from '@/components/ui/button';
 import {
@@ -47,7 +48,7 @@ function SubmitButton() {
 }
 
 export function CampusAIClient() {
-  const [state, formAction] = useFormState(askQuestion, initialState);
+  const [state, formAction] = useActionState(askQuestion, initialState);
   const { toast } = useToast();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const formRef = React.useRef<HTMLFormElement>(null);
