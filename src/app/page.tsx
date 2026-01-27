@@ -89,7 +89,6 @@ export default function Home() {
   const formRef = React.useRef<HTMLFormElement>(null);
   const [file, setFile] = React.useState<File | null>(null);
   const [isDragging, setIsDragging] = React.useState(false);
-  const [answerKey, setAnswerKey] = React.useState(0);
 
   React.useEffect(() => {
     if (state.error) {
@@ -99,10 +98,7 @@ export default function Home() {
         description: state.error,
       });
     }
-    if (state.answer) {
-      setAnswerKey(key => key + 1);
-    }
-  }, [state, toast]);
+  }, [state.error, toast]);
 
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const selectedFile = e.target.files?.[0];
@@ -258,7 +254,7 @@ export default function Home() {
                 </CardContent>
             </Card>
 
-            <AnswerSection key={answerKey} answer={state.answer} />
+            <AnswerSection answer={state.answer} />
           </form>
 
         </div>
