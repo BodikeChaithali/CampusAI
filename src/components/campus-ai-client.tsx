@@ -134,9 +134,8 @@ export function CampusAIClient() {
   };
 
   return (
-    <div className="space-y-8">
+    <form ref={formRef} action={clientAction} className="space-y-8">
       <Card className="shadow-lg">
-        <form ref={formRef} action={clientAction}>
           <CardContent className="p-6 grid gap-6">
             <div className="grid gap-2">
               <Label htmlFor="pdf-upload">Upload Document</Label>
@@ -203,11 +202,10 @@ export function CampusAIClient() {
               <SubmitButton />
             </div>
           </CardContent>
-        </form>
       </Card>
 
       <AnswerSection key={state.timestamp} answer={state.answer} />
-    </div>
+    </form>
   );
 }
 
