@@ -1,8 +1,8 @@
 'use server';
 /**
- * @fileOverview Generates a concise study guide from lecture notes (PDF).
+ * @fileOverview Answers a question based on the content of a PDF document.
  *
- * - generateStudyGuide - A function that handles the study guide generation process.
+ * - generateStudyGuide - A function that handles the question answering process.
  * - GenerateStudyGuideInput - The input type for the generateStudyGuide function.
  * - GenerateStudyGuideOutput - The return type for the generateStudyGuide function.
  */
@@ -14,14 +14,14 @@ const GenerateStudyGuideInputSchema = z.object({
   pdfDataUri: z
     .string()
     .describe(
-      "A PDF document containing lecture notes, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
+      "A PDF document, as a data URI that must include a MIME type and use Base64 encoding. Expected format: 'data:<mimetype>;base64,<encoded_data>'."
     ),
   question: z.string().describe('The question to answer using the PDF content.'),
 });
 export type GenerateStudyGuideInput = z.infer<typeof GenerateStudyGuideInputSchema>;
 
 const GenerateStudyGuideOutputSchema = z.object({
-  studyGuide: z.string().describe('A concise study guide summarizing the key concepts from the lecture notes.'),
+  studyGuide: z.string().describe('The answer to the question based on the content of the PDF.'),
 });
 export type GenerateStudyGuideOutput = z.infer<typeof GenerateStudyGuideOutputSchema>;
 
@@ -33,7 +33,7 @@ const generateStudyGuidePrompt = ai.definePrompt({
   name: 'generateStudyGuidePrompt',
   input: {schema: GenerateStudyGuideInputSchema},
   output: {schema: GenerateStudyGuideOutputSchema},
-  prompt: `You are an AI assistant designed to generate concise study guides from lecture notes.
+  prompt: `You are an AI assistant designed to answer questions based on a provided document.
 
   Please answer the following question using ONLY the information from the provided PDF content. If the answer is not present, respond with: 'The information is not available in the document.'
 
