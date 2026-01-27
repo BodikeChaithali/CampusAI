@@ -204,7 +204,7 @@ export default function Home() {
                     <Textarea
                       id="question"
                       name="question"
-                      placeholder="e.g., What are the key deadlines for the project?"
+                      placeholder="e.g., What are the key topics in the lecture notes?"
                       required
                       className="min-h-[100px] resize-none"
                     />
