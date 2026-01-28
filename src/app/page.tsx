@@ -1,4 +1,3 @@
-
 'use client';
 
 import * as React from 'react';
@@ -20,26 +19,12 @@ import { useToast } from '@/hooks/use-toast';
 import { Skeleton } from '@/components/ui/skeleton';
 
 const initialState: AskQuestionState = {
-  answer: `Based on the lecture notes provided, here is a summary of the key topics:
-
-**1. Introduction to Photosynthesis:**
-*   **Definition:** The process used by plants, algae, and some bacteria to convert light energy into chemical energy.
-*   **Equation:** 6CO2 + 6H2O + Light Energy → C6H12O6 + 6O2
-*   **Importance:** It is the primary source of oxygen in the atmosphere and the foundation of most food chains.
-
-**2. The Two Stages of Photosynthesis:**
-*   **Light-Dependent Reactions:** Occur in the thylakoid membranes. Water is split, oxygen is released, and ATP and NADPH are produced.
-*   **Calvin Cycle (Light-Independent Reactions):** Occurs in the stroma. CO2 is captured and used to build sugars like glucose, using the energy from ATP and NADPH.
-
-**3. Factors Affecting Photosynthesis:**
-*   **Light Intensity:** Rate increases with light intensity up to a saturation point.
-*   **Carbon Dioxide Concentration:** Rate increases with CO2 concentration until another factor becomes limiting.
-*   **Temperature:** Has an optimal range; too high or too low temperatures can denature enzymes and slow the rate.
-
-This guide should help you prepare for your exam.`,
+  answer: null,
   error: null,
 };
 
+// Moved outside the Home component to prevent re-creation on every render.
+// This is a critical performance and stability fix for React components.
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
@@ -56,6 +41,7 @@ function SubmitButton() {
   );
 }
 
+// Moved outside the Home component for stability and to prevent hydration errors.
 function AnswerSection({ answer }: { answer: string | null }) {
   const { pending } = useFormStatus();
 
@@ -81,9 +67,8 @@ function AnswerSection({ answer }: { answer: string | null }) {
     return null;
   }
   
-  // Using a key with the answer forces a remount and re-triggers the animation
   return (
-    <Card key={answer} className="shadow-lg animate-in fade-in-0 duration-500">
+    <Card className="shadow-lg animate-in fade-in-0 duration-500">
       <CardHeader>
         <CardTitle className="flex items-center gap-2">
           <Lightbulb className="h-5 w-5 text-primary" />
@@ -234,5 +219,3 @@ export default function Home() {
     </div>
   );
 }
-
-    
