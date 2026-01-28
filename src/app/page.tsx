@@ -23,8 +23,6 @@ const initialState: AskQuestionState = {
   error: null,
 };
 
-// Moved outside the Home component to prevent re-creation on every render.
-// This is a critical performance and stability fix for React components.
 function SubmitButton() {
   const { pending } = useFormStatus();
   return (
@@ -41,7 +39,6 @@ function SubmitButton() {
   );
 }
 
-// Moved outside the Home component for stability and to prevent hydration errors.
 function AnswerSection({ answer }: { answer: string | null }) {
   const { pending } = useFormStatus();
 
@@ -89,6 +86,11 @@ export default function Home() {
   const { toast } = useToast();
   const fileInputRef = React.useRef<HTMLInputElement>(null);
   const [file, setFile] = React.useState<File | null>(null);
+  const [isClient, setIsClient] = React.useState(false);
+
+  React.useEffect(() => {
+    setIsClient(true);
+  }, []);
 
   React.useEffect(() => {
     if (state.error) {
@@ -148,7 +150,7 @@ export default function Home() {
                 <CardContent className="p-6 grid gap-6">
                   <div className="grid gap-2">
                     <Label htmlFor="pdf-upload-input">Upload Document</Label>
-                    {file ? (
+                    {isClient && file ? (
                       <div className="flex items-center justify-between p-3 border rounded-lg bg-secondary/50">
                         <div className="flex items-center gap-3">
                           <FileText className="h-6 w-6 text-primary" />
@@ -178,7 +180,7 @@ export default function Home() {
                           <p className="mb-2 text-sm text-muted-foreground">
                             <span className="font-semibold text-primary">Click to upload</span>
                           </p>
-                          <p className="text-xs text-muted-foreground">PDF, DOCX, TXT</p>
+                          <p className="text-xs text-muted-foreground">PDF only</p>
                         </div>
                         <input
                           id="pdf-upload-input"
@@ -187,6 +189,7 @@ export default function Home() {
                           type="file"
                           onChange={handleFileChange}
                           className="hidden"
+                          accept="application/pdf"
                         />
                       </label>
                     )}
